@@ -1,4 +1,4 @@
-<project name="Every tee time core" default="compile" basedir=".">
+<project name="Array rotator" default="compile" basedir=".">
 	<!-- properties -->
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="bin.dir" value="${basedir}/bin" />
