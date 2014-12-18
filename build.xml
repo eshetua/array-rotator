@@ -1,0 +1,57 @@
+<project name="Every tee time core" default="compile" basedir=".">
+	<!-- properties -->
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="bin.dir" value="${basedir}/bin" />
+	<property name="dist.name" value="ArrayRotator" />
+
+	<!-- class path -->
+	<path id="build.classpath">
+		<fileset dir="${basedir}/libs" includes="**/*.jar" />
+		<pathelement location="." />
+	</path>
+
+	<!-- Manifest file class path entry -->
+	<manifestclasspath property="lib.list" jarfile="${bin.dir}/${dist.name}.jar">
+		<classpath refid="build.classpath" />
+	</manifestclasspath>
+
+	<!-- cleans all project related binary files -->
+	<target name="clean">
+		<echo>Started cleaning resources. </echo>
+		<delete dir="${bin.dir}" includeemptydirs="true" includes="**/*.*" />
+		<echo>Done cleaning resources.</echo>
+	</target>
+
+	<!-- prepares distribution folders -->
+	<target name="init" depends="clean">
+		<echo>Started creating necessary file structures.</echo>
+		<mkdir dir="${bin.dir}" />
+		<echo>Done creating files.</echo>
+	</target>
+
+	<!-- compile project -->
+	<target name="compile" depends="init">
+		<echo>Starting to compile the project</echo>
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" classpathref="build.classpath" />
+		<echo>Finishing compiling...</echo>
+	</target>
+
+	<!-- package the classes into a jar file -->
+	<target name="package" depends="compile">
+		<echo>Creating archive for distribution ...</echo>
+		<jar destfile="${bin.dir}/${dist.name}.jar" basedir="${bin.dir}" includes="**/*.class">
+			<manifest>
+				<attribute name="Main-Class" value="ArrayRotator" />
+				<attribute name="Class-Path" value="${lib.list}" />
+			</manifest>
+		</jar>
+		<echo>Done creating archive ...</echo>
+	</target>
+
+	<!-- run executable -->
+	<target name="runapp" depends="package">
+		<java jar="${bin.dir}/${dist.name}.jar" fork="true">
+		    <arg value="${option}"/>
+		</java>
+	</target>
+</project>
